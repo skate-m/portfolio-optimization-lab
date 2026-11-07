@@ -20,7 +20,7 @@ portfolio-optimization-lab/
 │   ├── 01_two_asset_efficient_frontier.ipynb
 │   ├── 02_n_asset_efficient_frontier.ipynb
 │   └── 03_global_minimum_variance.ipynb
-├── edhec_risk_kit.py                   # Reusable return, risk, and optimiser helpers
+├── risk_kit.py                         # Reusable return, risk, and optimiser helpers
 ├── requirements.txt
 └── README.md
 ```
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 
-Run the notebooks in numerical order. Starting Jupyter in the project root is important because the notebooks and `edhec_risk_kit.py` load the dataset from `data/` using relative paths.
+Run the notebooks in numerical order. Starting Jupyter in the project root is important because the notebooks and `risk_kit.py` load the dataset from `data/` using relative paths.
 
 ## Method notes
 
