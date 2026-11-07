@@ -1,0 +1,10 @@
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Operating-system files
+.DS_Store
