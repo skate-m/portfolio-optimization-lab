@@ -33,45 +33,77 @@ The project uses monthly value-weighted returns for the 30 industry portfolios f
 
 ## Selected research outputs
 
-The following figures are selected from executed notebooks. They are intended as a visual overview; the full index includes source links and interpretation notes.
+### Global minimum-variance portfolio and capital market line
 
-### Portfolio construction
+<p align="center">
+  <img src="outputs/gmv_and_cml.svg" alt="Global minimum-variance portfolio and capital market line" width="88%">
+</p>
+
+*Source: [Notebook 01 — Efficient frontier](notebooks/01_efficient_frontier.ipynb).*
+
+### Efficient frontier with maximum-Sharpe portfolio
 
 <p align="center">
   <img src="outputs/03_maximum_sharpe_frontier.png" alt="Efficient frontier with maximum-Sharpe portfolio" width="88%">
 </p>
 
-*Efficient frontier, tangency portfolio and capital market line. See [Notebook 03](notebooks/03_maximum_sharpe_ratio.ipynb).*
+*Source: [Notebook 03 — Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb).*
 
-### Stochastic simulation
-
-<p align="center">
-  <img src="outputs/04_gbm_simulated_paths.png" alt="Geometric Brownian motion simulated price paths" width="88%">
-</p>
-
-*Simulated geometric Brownian motion price paths. These are model scenarios, not forecasts. See [Notebook 04](notebooks/04_random_walk_gbm.ipynb).*
-
-### CPPI and portfolio insurance
+### CPPI wealth versus buy-and-hold risky-asset wealth
 
 <p align="center">
   <img src="outputs/05_cppi_wealth_comparison.png" alt="Historical CPPI wealth compared with risky-asset wealth" width="88%">
 </p>
 
-*Historical CPPI and buy-and-hold wealth comparison. See [Notebook 05](notebooks/05_cppi_drawdown_constraints.ipynb).*
+*Source: [Notebook 05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb).*
+
+### CPPI risky-asset allocation over time
 
 <p align="center">
-  <img src="outputs/06_cppi_terminal_wealth_distribution.png" alt="Monte Carlo terminal wealth distribution for CPPI" width="88%">
+  <img src="outputs/05_cppi_risky_allocation.png" alt="Historical CPPI risky-asset allocation over time" width="88%">
 </p>
 
-*Distribution of terminal wealth across simulated CPPI scenarios. See [Notebook 06](notebooks/06_cppi_monte_carlo.ipynb).*
+*Source: [Notebook 05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb).*
 
-### Diversification
+### CPPI wealth paths during the 2007–08 market crash
 
 <p align="center">
-  <img src="outputs/08_rolling_correlation.png" alt="Rolling average pairwise industry correlation" width="88%">
+  <img src="outputs/05_cppi_crash_comparison.png" alt="CPPI and risky-asset wealth around the 2007–08 market crash" width="88%">
 </p>
 
-*Rolling 36-month average pairwise industry correlation. See [Notebook 08](notebooks/08_limits_of_diversification.ipynb).*
+*Source: [Notebook 05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb).*
+
+### Monte Carlo CPPI wealth trajectories
+
+<p align="center">
+  <img src="outputs/06_cppi_monte_carlo_paths.png" alt="Monte Carlo simulated CPPI wealth trajectories" width="88%">
+</p>
+
+*Source: [Notebook 06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb).*
+
+### Monte Carlo CPPI terminal-wealth distribution
+
+<p align="center">
+  <img src="outputs/06_cppi_terminal_wealth_distribution.png" alt="Monte Carlo CPPI terminal wealth distribution" width="88%">
+</p>
+
+*Source: [Notebook 06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb).*
+
+### Rolling 36-month average industry correlation
+
+<p align="center">
+  <img src="outputs/08_rolling_correlation.png" alt="Rolling 36-month average pairwise industry correlation" width="88%">
+</p>
+
+*Source: [Notebook 08 — Limits of diversification](notebooks/08_limits_of_diversification.ipynb).*
+
+### Trailing returns and correlation since 2007
+
+<p align="center">
+  <img src="outputs/08_returns_vs_correlation_2007_2018.png" alt="Trailing returns and correlation since 2007" width="88%">
+</p>
+
+*Source: [Notebook 08 — Limits of diversification](notebooks/08_limits_of_diversification.ipynb).*
 
 **Browse all figures:** [outputs/README.md](outputs/README.md).
 
