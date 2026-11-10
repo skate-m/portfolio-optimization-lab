@@ -1,53 +1,137 @@
+<div align="center">
+
 # Portfolio Optimization Lab
 
-A reproducible Python research project covering portfolio construction, risk measurement, stochastic simulation, CPPI portfolio insurance, liability valuation and the limits of diversification. The project uses the Ken French 30-industry monthly value-weighted return dataset bundled in this repository.
+**A Python research toolkit for portfolio construction, risk analysis, stochastic simulation and portfolio insurance.**
 
-## Research notebooks
+[![Tests](https://github.com/skate-m/portfolio-optimization-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/skate-m/portfolio-optimization-lab/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![License](https://img.shields.io/badge/License-See%20repository-lightgrey)
+![Notebooks](https://img.shields.io/badge/Research%20notebooks-8-2f6f8f)
 
-Run the notebooks in numerical order. Each notebook imports the shared implementation through `import risk_kit as rk`; reusable calculations are not duplicated across notebooks.
+[Research notebooks](notebooks/README.md) · [Figure gallery](outputs/README.md) · [Data documentation](data/README.md)
 
-| Notebook | Topic |
+</div>
+
+---
+
+## Overview
+
+Portfolio Optimization Lab is a reproducible, notebook-driven exploration of quantitative portfolio theory. It combines a shared Python toolkit with eight focused research notebooks and a curated gallery of executed results.
+
+The project uses monthly value-weighted returns for the 30 industry portfolios from the **Kenneth R. French Data Library**. The included dataset spans July 1926 to December 2018.
+
+### Research areas
+
+| Area | What is explored |
 |---|---|
-| [01 — Efficient frontier](notebooks/01_efficient_frontier.ipynb) | Two-asset feasible set, N-asset frontier, GMV, equal-weight and CML comparisons |
-| [02 — Global minimum variance](notebooks/02_global_minimum_variance.ipynb) | GMV construction and estimation risk |
-| [03 — Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb) | Tangency portfolio, CML and expected-return sensitivity |
-| [04 — Random walks and GBM](notebooks/04_random_walk_gbm.ipynb) | Geometric Brownian motion and stochastic price paths |
-| [05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb) | Static-floor CPPI, ratcheting drawdown floors and historical comparisons |
-| [06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb) | Scenario simulation, terminal wealth and floor-breach statistics |
-| [07 — Liabilities and funding ratio](notebooks/07_liabilities_funding_ratio.ipynb) | Discount factors, present value and funding-ratio sensitivity |
-| [08 — Limits of diversification](notebooks/08_limits_of_diversification.ipynb) | Rolling correlations and diversification through market stress |
+| Portfolio construction | Two-asset opportunity sets, efficient frontiers, global minimum variance and tangency portfolios |
+| Estimation risk | Sensitivity of optimal allocations to expected-return assumptions |
+| Stochastic modelling | Geometric Brownian motion and Monte Carlo price paths |
+| Portfolio insurance | CPPI, static floors, drawdown constraints and floor-breach analysis |
+| Liability valuation | Discount factors, present value and funding ratios |
+| Diversification | Rolling industry correlations and market-cap-weighted extensions |
 
-## Results
+## Selected research outputs
 
-The `outputs/` directory contains a curated set of genuine plots captured from executed notebooks, alongside the original efficient-frontier SVGs. The screenshot-derived PNGs have been cropped to remove notebook UI while preserving the original chart output.
+The following figures are selected from executed notebooks. They are intended as a visual overview; the full index includes source links and interpretation notes.
 
-### Portfolio construction and stochastic simulation
+### Portfolio construction
 
-![Maximum-Sharpe efficient frontier](outputs/03_maximum_sharpe_frontier.png)
+<p align="center">
+  <img src="outputs/03_maximum_sharpe_frontier.png" alt="Efficient frontier with maximum-Sharpe portfolio" width="88%">
+</p>
 
-![GBM simulated price paths](outputs/04_gbm_simulated_paths.png)
+*Efficient frontier, tangency portfolio and capital market line. See [Notebook 03](notebooks/03_maximum_sharpe_ratio.ipynb).*
+
+### Stochastic simulation
+
+<p align="center">
+  <img src="outputs/04_gbm_simulated_paths.png" alt="Geometric Brownian motion simulated price paths" width="88%">
+</p>
+
+*Simulated geometric Brownian motion price paths. These are model scenarios, not forecasts. See [Notebook 04](notebooks/04_random_walk_gbm.ipynb).*
 
 ### CPPI and portfolio insurance
 
-![Historical CPPI wealth comparison](outputs/05_cppi_wealth_comparison.png)
+<p align="center">
+  <img src="outputs/05_cppi_wealth_comparison.png" alt="Historical CPPI wealth compared with risky-asset wealth" width="88%">
+</p>
 
-![Historical risky-asset allocation](outputs/05_cppi_risky_allocation.png)
+*Historical CPPI and buy-and-hold wealth comparison. See [Notebook 05](notebooks/05_cppi_drawdown_constraints.ipynb).*
 
-![CPPI through the 2007–08 crash](outputs/05_cppi_crash_comparison.png)
+<p align="center">
+  <img src="outputs/06_cppi_terminal_wealth_distribution.png" alt="Monte Carlo terminal wealth distribution for CPPI" width="88%">
+</p>
 
-![Monte Carlo CPPI paths](outputs/06_cppi_monte_carlo_paths.png)
+*Distribution of terminal wealth across simulated CPPI scenarios. See [Notebook 06](notebooks/06_cppi_monte_carlo.ipynb).*
 
-![Monte Carlo terminal wealth distribution](outputs/06_cppi_terminal_wealth_distribution.png)
+### Diversification
 
-### Diversification and market behaviour
+<p align="center">
+  <img src="outputs/08_rolling_correlation.png" alt="Rolling average pairwise industry correlation" width="88%">
+</p>
 
-![Historical market cap-weighted index](outputs/08_market_cap_weighted_index.png)
+*Rolling 36-month average pairwise industry correlation. See [Notebook 08](notebooks/08_limits_of_diversification.ipynb).*
 
-![Rolling 36-month correlation](outputs/08_rolling_correlation.png)
+**Browse all figures:** [outputs/README.md](outputs/README.md).
 
-![Trailing returns and correlation since 2007](outputs/08_returns_vs_correlation_2007_2018.png)
+## Research notebook sequence
 
-See [outputs/README.md](outputs/README.md) for the complete figure index and source notebook mapping.
+Run the notebooks in numerical order. Each notebook uses the shared implementation via `import risk_kit as rk`.
+
+| # | Notebook | Focus |
+|---:|---|---|
+| 01 | [Efficient frontier](notebooks/01_efficient_frontier.ipynb) | Two-asset and N-asset frontiers, GMV and reference portfolios |
+| 02 | [Global minimum variance](notebooks/02_global_minimum_variance.ipynb) | Estimation risk and covariance-driven allocation |
+| 03 | [Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb) | Tangency portfolio, CML and return sensitivity |
+| 04 | [Random walks and GBM](notebooks/04_random_walk_gbm.ipynb) | Stochastic price paths and simulation assumptions |
+| 05 | [CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb) | Historical CPPI, risky allocation and drawdown floors |
+| 06 | [Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb) | Scenario paths, terminal wealth and floor breaches |
+| 07 | [Liabilities and funding ratio](notebooks/07_liabilities_funding_ratio.ipynb) | Discounting, present value and funding sensitivity |
+| 08 | [Limits of diversification](notebooks/08_limits_of_diversification.ipynb) | Rolling correlations and diversification behaviour |
+
+See [notebooks/README.md](notebooks/README.md) for the complete notebook guide, conventions and execution notes.
+
+## Quick start
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/skate-m/portfolio-optimization-lab.git
+cd portfolio-optimization-lab
+```
+
+### 2. Create an environment and install dependencies
+
+```bash
+python -m venv .venv
+
+# Linux / macOS
+source .venv/bin/activate
+
+# Windows PowerShell
+# .venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 3. Launch JupyterLab
+
+```bash
+jupyter lab
+```
+
+Run JupyterLab from the repository root so notebooks can import `risk_kit.py` and resolve the bundled data paths. For reproducible results, use **Kernel → Restart Kernel and Run All Cells**.
+
+### 4. Run the test suite
+
+```bash
+pytest -q
+```
+
+GitHub Actions runs the test suite on pushes and pull requests to `main`.
 
 ## Repository structure
 
@@ -57,6 +141,7 @@ portfolio-optimization-lab/
 │   ├── ind30_m_vw_rets.csv
 │   └── README.md
 ├── notebooks/
+│   ├── README.md
 │   ├── 01_efficient_frontier.ipynb
 │   ├── 02_global_minimum_variance.ipynb
 │   ├── 03_maximum_sharpe_ratio.ipynb
@@ -76,49 +161,49 @@ portfolio-optimization-lab/
 └── requirements.txt
 ```
 
-## Setup
-
-Python 3.10 or newer is recommended.
-
-```bash
-git clone https://github.com/skate-m/portfolio-optimization-lab.git
-cd portfolio-optimization-lab
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-jupyter lab
-```
-
-Run JupyterLab from the repository root so that the notebooks can import `risk_kit.py` and locate the bundled dataset. On Windows, activate the environment with `.venv\\Scripts\\activate`.
-
-Run the automated checks with:
-
-```bash
-pytest -q
-```
-
 ## Shared toolkit
 
-`risk_kit.py` is the common API for the notebooks. It includes industry-data loading, drawdowns, skewness/kurtosis, historical and Gaussian VaR, annualisation, Sharpe ratios, portfolio statistics, constrained optimisation (GMV/MSR/frontier), geometric Brownian motion, CPPI backtesting with optional drawdown ratchets, and liability discounting/funding ratios.
+[`risk_kit.py`](risk_kit.py) contains reusable implementations for:
 
-All return inputs are decimal returns: `0.01` represents 1%. Annual rates are expressed as decimals. The industry-return CSV stores percentage points and is converted by `get_ind_returns()`.
+- Industry data loading and optional market-cap index construction.
+- Drawdown, skewness, kurtosis, historical VaR and Gaussian VaR.
+- Annualised return, volatility, Sharpe ratio and summary statistics.
+- Portfolio return and volatility calculations.
+- Long-only GMV, maximum-Sharpe and efficient-frontier optimisation.
+- Geometric Brownian motion simulation.
+- CPPI backtesting with static and ratcheting drawdown floors.
+- Liability discounting, present value and funding ratios.
 
-## Data provenance and optional extensions
+**Conventions:** returns are decimal simple returns (`0.01` = 1%). Annual rates and expected returns are decimals. The source CSV stores returns in percentage points; `get_ind_returns()` converts them to decimals.
 
-The included `data/ind30_m_vw_rets.csv` snapshot contains 1,110 monthly observations across 30 industries from July 1926 through December 2018. It is a Ken French Data Library 30-industry value-weighted return series. See [data/README.md](data/README.md).
+## Data provenance
 
-The market-cap-weighted extension in the diversification and CPPI notebooks additionally requires the companion firm-count and average-firm-size files. Those source files were not part of the supplied repository data and are intentionally not fabricated. The core notebooks run without them; the affected optional sections explain how to enable the extension.
+The bundled `data/ind30_m_vw_rets.csv` file contains 1,110 monthly observations across 30 industries, from July 1926 through December 2018. Source: [Kenneth R. French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
+
+Optional market-cap-weighted extensions require two additional source files that are not bundled:
+
+- `ind30_m_nfirms.csv` — number of firms by industry.
+- `ind30_m_size.csv` — average firm size by industry.
+
+The optional sections explain how to provide these files. Missing values are not fabricated. See [data/README.md](data/README.md).
 
 ## Methodology and limitations
 
-- Historical estimation window in the efficient-frontier examples: January 1996–December 2000.
-- Monthly returns are geometrically annualised; monthly covariance matrices are multiplied by 12.
-- Portfolio optimisers use long-only weights in [0, 1] that sum to one.
-- The illustrative 3% annual risk-free rate and flat discount rates are assumptions, not market quotes.
-- CPPI is exposed to gap risk and discrete-rebalancing risk; a floor is not guaranteed in real markets.
+- Efficient-frontier examples estimate expected returns and covariance from January 1996–December 2000.
+- Monthly returns are geometrically annualised; monthly covariance is multiplied by 12.
+- Optimisation examples use fully invested, long-only weights bounded between zero and one.
+- The 3% annual risk-free rate is an illustrative assumption, not a live market quote.
 - GBM assumes constant drift and volatility with lognormal returns; it omits jumps, volatility clustering and regime changes.
-- Liability valuation uses a flat curve and simplified annual compounding.
-- Backtests exclude transaction costs, taxes, market impact, liquidity constraints and out-of-sample execution.
+- CPPI is exposed to gap and discrete-rebalancing risk; a floor is not guaranteed in real markets.
+- Liability valuation uses a flat discount curve and simplified annual compounding.
+- Backtests omit transaction costs, taxes, market impact, liquidity constraints and out-of-sample execution.
 
-This is an educational research project, not investment advice. Historical results and simulated scenarios do not predict future performance.
+This repository is an educational quantitative-finance research project, not investment advice. Historical results and simulated scenarios do not predict future performance.
+
+---
+
+<div align="center">
+
+**Built for learning, experimentation and reproducible quantitative research.**
+
+</div>
