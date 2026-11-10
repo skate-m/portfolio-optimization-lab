@@ -19,17 +19,7 @@ Run the notebooks in numerical order. Each notebook imports the shared implement
 
 ## Results
 
-Standalone SVG previews are stored in [outputs/](outputs/) and linked from the corresponding notebooks. The efficient-frontier figures are based on the bundled historical dataset and the documented estimation window. Additional GBM, CPPI, Monte Carlo and diversification previews are explicitly marked illustrative; rerun the relevant notebook cells to generate exact data-driven plots. The funding-ratio sensitivity figure is calculated from the liability cash flows and assumptions defined in notebook 07.
-
-| Research area | Output figures |
-|---|---|
-| Efficient frontier | [Two-asset frontier](outputs/two_asset_frontier.svg), [N-asset frontier](outputs/n_asset_frontier.svg), [GMV and CML](outputs/gmv_and_cml.svg) |
-| Maximum Sharpe | [Allocation sensitivity](outputs/03_maximum_sharpe_weights.svg) |
-| Geometric Brownian motion | [Price paths](outputs/04_gbm_price_paths.svg), [Volatility comparison](outputs/04_gbm_volatility_comparison.svg) |
-| CPPI and drawdown | [Wealth comparison](outputs/05_cppi_wealth_comparison.svg), [Drawdown floor](outputs/05_cppi_drawdown_floor.svg) |
-| Monte Carlo CPPI | [Wealth paths](outputs/06_cppi_monte_carlo_paths.svg), [Terminal wealth](outputs/06_cppi_terminal_wealth.svg), [Volatility sensitivity](outputs/06_cppi_volatility_sensitivity.svg) |
-| Liability valuation | [Funding-ratio sensitivity](outputs/07_funding_ratio_sensitivity.svg) |
-| Diversification | [Rolling correlation](outputs/08_rolling_correlation.svg) |
+The committed SVG figures in [outputs/](outputs/) are genuine plots retained from the efficient-frontier analysis. They are historical illustrations based on the bundled dataset, not forecasts. Other notebooks generate their plots when executed; only generated, data-backed outputs should be committed to this directory.
 
 ## Repository structure
 
