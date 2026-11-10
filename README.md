@@ -8,8 +8,8 @@ Run the notebooks in numerical order. Each notebook imports the shared implement
 
 | Notebook | Topic |
 |---|---|
-| [01 — Efficient frontier](notebooks/efficient_frontier.ipynb) | Two-asset feasible set, N-asset frontier, GMV, equal-weight and CML comparisons |
-| [02 — Global minimum variance](notebooks/global_minimum_variance.ipynb) | GMV construction and estimation risk |
+| [01 — Efficient frontier](notebooks/01_efficient_frontier.ipynb) | Two-asset feasible set, N-asset frontier, GMV, equal-weight and CML comparisons |
+| [02 — Global minimum variance](notebooks/02_global_minimum_variance.ipynb) | GMV construction and estimation risk |
 | [03 — Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb) | Tangency portfolio, CML and expected-return sensitivity |
 | [04 — Random walks and GBM](notebooks/04_random_walk_gbm.ipynb) | Geometric Brownian motion and stochastic price paths |
 | [05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb) | Static-floor CPPI, ratcheting drawdown floors and historical comparisons |
@@ -29,8 +29,8 @@ portfolio-optimization-lab/
 │   ├── ind30_m_vw_rets.csv
 │   └── README.md
 ├── notebooks/
-│   ├── efficient_frontier.ipynb
-│   ├── global_minimum_variance.ipynb
+│   ├── 01_efficient_frontier.ipynb
+│   ├── 02_global_minimum_variance.ipynb
 │   ├── 03_maximum_sharpe_ratio.ipynb
 │   ├── 04_random_walk_gbm.ipynb
 │   ├── 05_cppi_drawdown_constraints.ipynb
