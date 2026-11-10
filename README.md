@@ -19,7 +19,35 @@ Run the notebooks in numerical order. Each notebook imports the shared implement
 
 ## Results
 
-The committed SVG figures in [outputs/](outputs/) are genuine plots retained from the efficient-frontier analysis. They are historical illustrations based on the bundled dataset, not forecasts. Other notebooks generate their plots when executed; only generated, data-backed outputs should be committed to this directory.
+The `outputs/` directory contains a curated set of genuine plots captured from executed notebooks, alongside the original efficient-frontier SVGs. The screenshot-derived PNGs have been cropped to remove notebook UI while preserving the original chart output.
+
+### Portfolio construction and stochastic simulation
+
+![Maximum-Sharpe efficient frontier](outputs/03_maximum_sharpe_frontier.png)
+
+![GBM simulated price paths](outputs/04_gbm_simulated_paths.png)
+
+### CPPI and portfolio insurance
+
+![Historical CPPI wealth comparison](outputs/05_cppi_wealth_comparison.png)
+
+![Historical risky-asset allocation](outputs/05_cppi_risky_allocation.png)
+
+![CPPI through the 2007–08 crash](outputs/05_cppi_crash_comparison.png)
+
+![Monte Carlo CPPI paths](outputs/06_cppi_monte_carlo_paths.png)
+
+![Monte Carlo terminal wealth distribution](outputs/06_cppi_terminal_wealth_distribution.png)
+
+### Diversification and market behaviour
+
+![Historical market cap-weighted index](outputs/08_market_cap_weighted_index.png)
+
+![Rolling 36-month correlation](outputs/08_rolling_correlation.png)
+
+![Trailing returns and correlation since 2007](outputs/08_returns_vs_correlation_2007_2018.png)
+
+See [outputs/README.md](outputs/README.md) for the complete figure index and source notebook mapping.
 
 ## Repository structure
 
@@ -38,9 +66,8 @@ portfolio-optimization-lab/
 │   ├── 07_liabilities_funding_ratio.ipynb
 │   └── 08_limits_of_diversification.ipynb
 ├── outputs/
-│   ├── two_asset_frontier.svg
-│   ├── n_asset_frontier.svg
-│   ├── gmv_and_cml.svg
+│   ├── *.png
+│   ├── *.svg
 │   └── README.md
 ├── tests/
 │   └── test_risk_kit.py
