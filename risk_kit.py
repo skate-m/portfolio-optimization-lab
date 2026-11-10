@@ -54,9 +54,8 @@ def get_total_market_index_returns(path=None):
 def drawdown(returns, initial_wealth=1000):
     """Return wealth, running peaks and percentage drawdowns."""
     wealth = initial_wealth * (1 + returns).cumprod()
-    wealth = wealth + initial_wealth
     peaks = wealth.cummax().clip(lower=initial_wealth)
-    return pd.DataFrame({"Wealth": wealth, "Peaks": peaks, "Drawdown": wealth / peaks - 1})
+    return pd.concat({"Wealth": wealth, "Peaks": peaks, "Drawdown": wealth / peaks - 1}, axis=1)
 
 
 def skewness(returns):
