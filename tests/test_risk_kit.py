@@ -37,6 +37,14 @@ def test_drawdown_uses_initial_wealth_once():
     assert result["Drawdown"].iloc[1] == pytest.approx(-0.20)
 
 
+def test_summary_stats_includes_initial_wealth_in_drawdown():
+    returns = pd.Series([-0.10, 0.05, -0.05], name="Strategy")
+    stats = rk.summary_stats(returns, riskfree_rate=0.0, periods_per_year=12)
+    expected_wealth = (1 - 0.10) * (1 + 0.05) * (1 - 0.05)
+    expected_drawdown = min(0.90 / 1.0 - 1, expected_wealth / 1.0 - 1)
+    assert stats.loc["Strategy", "Max Drawdown"] == pytest.approx(expected_drawdown)
+
+
 def test_gbm_is_seed_reproducible_and_shapes_are_consistent():
     a = rk.gbm(1, 3, prices=False, seed=12)
     b = rk.gbm(1, 3, prices=False, seed=12)
@@ -47,6 +55,13 @@ def test_gbm_is_seed_reproducible_and_shapes_are_consistent():
     assert (prices.iloc[0] == 100).all()
 
 
+def test_gbm_rejects_invalid_parameters():
+    with pytest.raises(ValueError):
+        rk.gbm(0.01, 10, steps_per_year=1)
+    with pytest.raises(ValueError):
+        rk.gbm(1, 10, sigma=np.nan)
+
+
 def test_cppi_returns_aligned_outputs_and_bounded_weights():
     returns = pd.DataFrame({"A": [0.02, -0.03, 0.01], "B": [-0.01, 0.01, 0.02]})
     result = rk.run_cppi(returns, start=100, floor=0.8, drawdown=0.25)
@@ -54,6 +69,12 @@ def test_cppi_returns_aligned_outputs_and_bounded_weights():
     assert result["Risky Allocation"].shape == returns.shape
     assert result["Risky Allocation"].to_numpy().min() >= 0
     assert result["Risky Allocation"].to_numpy().max() <= 1
+
+
+def test_cppi_rejects_returns_below_minus_one():
+    returns = pd.Series([-1.01])
+    with pytest.raises(ValueError):
+        rk.run_cppi(returns)
 
 
 def test_liability_discounting_and_funding_ratio():
