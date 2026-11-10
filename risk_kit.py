@@ -170,7 +170,11 @@ def optimal_weights(n_points, er, cov):
     er, cov = _validate_inputs(er, cov)
     if n_points < 2:
         raise ValueError("n_points must be at least 2.")
-    return [minimize_vol(target, er, cov) for target in np.linspace(er.min(), er.max(), n_points)]
+    # The efficient branch begins at the GMV portfolio, not at the lowest-return endpoint.
+    minimum_variance_weights = gmv(cov)
+    minimum_variance_return = portfolio_return(minimum_variance_weights, er)
+    targets = np.linspace(minimum_variance_return, er.max(), n_points)
+    return [minimize_vol(target, er, cov) for target in targets]
 
 
 def msr(riskfree_rate, er, cov):
