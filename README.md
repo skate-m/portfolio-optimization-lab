@@ -6,7 +6,6 @@
 
 [![Tests](https://github.com/skate-m/portfolio-optimization-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/skate-m/portfolio-optimization-lab/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![License](https://img.shields.io/badge/License-See%20repository-lightgrey)
 ![Notebooks](https://img.shields.io/badge/Research%20notebooks-8-2f6f8f)
 
 [Research notebooks](notebooks/README.md) · [Figure gallery](outputs/README.md) · [Data documentation](data/README.md)
