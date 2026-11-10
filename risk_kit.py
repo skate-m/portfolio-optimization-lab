@@ -123,7 +123,10 @@ def summary_stats(returns, riskfree_rate=0.03, periods_per_year=12):
     stats["Historical VaR (5%)"] = var_historic(returns)
     stats["Gaussian VaR (5%)"] = var_gaussian(returns)
     compounded = (1 + returns).cumprod()
-    stats["Max Drawdown"] = (compounded / compounded.cummax() - 1).min()
+    # Include initial wealth (1.0) as the first running peak. Without this,
+    # a loss in the first observation is incorrectly reported as zero drawdown.
+    running_peaks = compounded.cummax().clip(lower=1.0)
+    stats["Max Drawdown"] = (compounded / running_peaks - 1).min()
     return stats
 
 
@@ -140,10 +143,12 @@ def portfolio_vol(weights, covmat):
 
 def _validate_inputs(er, cov):
     er, cov = np.asarray(er, dtype=float).reshape(-1), np.asarray(cov, dtype=float)
-    if cov.shape != (er.size, er.size):
-        raise ValueError("Expected-return and covariance dimensions do not match.")
+    if er.size == 0 or cov.shape != (er.size, er.size):
+        raise ValueError("Expected-return and covariance dimensions do not match or are empty.")
     if not np.isfinite(er).all() or not np.isfinite(cov).all():
         raise ValueError("Expected returns and covariance must be finite.")
+    if not np.allclose(cov, cov.T, atol=1e-10):
+        raise ValueError("Covariance matrix must be symmetric.")
     return er, cov
 
 
@@ -170,7 +175,6 @@ def optimal_weights(n_points, er, cov):
     er, cov = _validate_inputs(er, cov)
     if n_points < 2:
         raise ValueError("n_points must be at least 2.")
-    # The efficient branch begins at the GMV portfolio, not at the lowest-return endpoint.
     minimum_variance_weights = gmv(cov)
     minimum_variance_return = portfolio_return(minimum_variance_weights, er)
     targets = np.linspace(minimum_variance_return, er.max(), n_points)
@@ -181,9 +185,11 @@ def msr(riskfree_rate, er, cov):
     """Find fully invested long-only weights maximising the Sharpe ratio."""
     er, cov = _validate_inputs(er, cov)
     n = er.size
+
     def negative_sharpe(w):
         vol = portfolio_vol(w, cov)
         return 1e12 if vol <= 1e-14 else -(portfolio_return(w, er) - riskfree_rate) / vol
+
     result = minimize(negative_sharpe, np.repeat(1/n, n), method="SLSQP",
                       bounds=((0, 1),) * n,
                       constraints=({"type": "eq", "fun": lambda w: np.sum(w) - 1},),
@@ -196,8 +202,10 @@ def msr(riskfree_rate, er, cov):
 def gmv(cov):
     """Find the fully invested long-only global minimum-variance allocation."""
     cov = np.asarray(cov, dtype=float)
-    if cov.ndim != 2 or cov.shape[0] != cov.shape[1]:
-        raise ValueError("cov must be a square covariance matrix.")
+    if cov.ndim != 2 or cov.shape[0] != cov.shape[1] or cov.shape[0] == 0:
+        raise ValueError("cov must be a non-empty square covariance matrix.")
+    if not np.isfinite(cov).all() or not np.allclose(cov, cov.T, atol=1e-10):
+        raise ValueError("cov must be finite and symmetric.")
     n = cov.shape[0]
     result = minimize(portfolio_vol, np.repeat(1/n, n), args=(cov,), method="SLSQP",
                       bounds=((0, 1),) * n,
@@ -257,9 +265,13 @@ def plot_ef(n_points, er, cov, style="-", riskfree_rate=0, show_cml=False,
 def gbm(n_years=10, n_scenarios=1000, mu=0.07, sigma=0.15,
         steps_per_year=12, s_0=100, prices=True, seed=None):
     """Simulate geometric Brownian motion; prices include the initial level."""
-    if n_years <= 0 or n_scenarios <= 0 or steps_per_year <= 0 or sigma < 0 or s_0 <= 0:
-        raise ValueError("Simulation dimensions and starting price must be positive; sigma cannot be negative.")
+    if (n_years <= 0 or n_scenarios <= 0 or steps_per_year <= 0
+            or sigma < 0 or s_0 <= 0
+            or not np.isfinite([n_years, n_scenarios, mu, sigma, steps_per_year, s_0]).all()):
+        raise ValueError("Simulation inputs must be finite; dimensions and starting price positive; sigma non-negative.")
     n_steps, dt = int(n_years * steps_per_year), 1 / steps_per_year
+    if n_steps < 1:
+        raise ValueError("n_years * steps_per_year must produce at least one time step.")
     rng = np.random.default_rng(seed)
     z = rng.standard_normal((n_steps, n_scenarios))
     rets = np.exp((mu - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * z) - 1
@@ -279,6 +291,12 @@ def run_cppi(risky_r, safe_r=None, riskfree_rate=0.03, m=3, start=100,
     risky_r = risky_r.astype(float).fillna(0.0)
     if risky_r.empty or start <= 0 or m < 0 or not 0 <= floor <= 1:
         raise ValueError("Provide non-empty returns, positive start, m >= 0 and floor in [0, 1].")
+    if not np.isfinite(risky_r.to_numpy()).all() or (risky_r <= -1).any().any():
+        raise ValueError("Risky simple returns must be finite and greater than -100%.")
+    if steps_per_year <= 0:
+        raise ValueError("steps_per_year must be positive.")
+    if drawdown is not None and not 0 <= drawdown < 1:
+        raise ValueError("drawdown must be in [0, 1).")
     if safe_r is None:
         rp = (1 + riskfree_rate) ** (1 / steps_per_year) - 1
         safe_r = pd.DataFrame(rp, index=risky_r.index, columns=risky_r.columns)
@@ -288,6 +306,8 @@ def run_cppi(risky_r, safe_r=None, riskfree_rate=0.03, m=3, start=100,
         safe_r = pd.DataFrame({c: safe_r for c in risky_r.columns}, index=risky_r.index)
     else:
         safe_r = safe_r.reindex_like(risky_r).fillna(0.0)
+    if not np.isfinite(safe_r.to_numpy()).all() or (safe_r <= -1).any().any():
+        raise ValueError("Safe simple returns must be finite and greater than -100%.")
     account, peak = np.repeat(float(start), risky_r.shape[1]), np.repeat(float(start), risky_r.shape[1])
     base_floor = account * floor
     wealth_rows, weights_rows, cushion_rows, floors_rows = [], [], [], []
@@ -296,8 +316,6 @@ def run_cppi(risky_r, safe_r=None, riskfree_rate=0.03, m=3, start=100,
         if drawdown is None:
             floor_value = base_floor
         else:
-            if not 0 <= drawdown < 1:
-                raise ValueError("drawdown must be in [0, 1).")
             floor_value = np.maximum(base_floor, peak * (1 - drawdown))
         cushion = np.maximum((account - floor_value) / np.maximum(account, 1e-12), 0)
         risky_weight = np.clip(m * cushion, 0, 1)
