@@ -1,70 +1,97 @@
 # Portfolio Optimization Lab
 
-A reproducible Python project exploring **mean–variance portfolio optimisation** using monthly value-weighted returns for the 30 industry portfolios published by the Kenneth R. French Data Library.
+A reproducible Python research project covering portfolio construction, risk measurement, stochastic simulation, CPPI portfolio insurance, liability valuation and the limits of diversification. The project uses the Ken French 30-industry monthly value-weighted return dataset bundled in this repository.
+
+## Research notebooks
+
+Run the notebooks in numerical order. Each notebook imports the shared implementation through `import risk_kit as rk`; reusable calculations are not duplicated across notebooks.
+
+| Notebook | Topic |
+|---|---|
+| [01 — Efficient frontier](notebooks/efficient_frontier.ipynb) | Two-asset feasible set, N-asset frontier, GMV, equal-weight and CML comparisons |
+| [02 — Global minimum variance](notebooks/global_minimum_variance.ipynb) | GMV construction and estimation risk |
+| [03 — Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb) | Tangency portfolio, CML and expected-return sensitivity |
+| [04 — Random walks and GBM](notebooks/04_random_walk_gbm.ipynb) | Geometric Brownian motion and stochastic price paths |
+| [05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb) | Static-floor CPPI, ratcheting drawdown floors and historical comparisons |
+| [06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb) | Scenario simulation, terminal wealth and floor-breach statistics |
+| [07 — Liabilities and funding ratio](notebooks/07_liabilities_funding_ratio.ipynb) | Discount factors, present value and funding-ratio sensitivity |
+| [08 — Limits of diversification](notebooks/08_limits_of_diversification.ipynb) | Rolling correlations and diversification through market stress |
 
 ## Results
 
-### Two-asset opportunity set
-![Two-asset frontier](outputs/two_asset_frontier.svg)
-Each point represents a fully invested mix of Games and Financials. The curve illustrates how covariance affects the risk–return trade-off.
-
-### Multi-asset efficient frontier
-![N-asset frontier](outputs/n_asset_frontier.svg)
-The curve contains long-only, minimum-volatility portfolios for a range of target returns across four industries.
-
-### GMV and capital-market comparison
-![GMV and CML](outputs/gmv_and_cml.svg)
-The comparison distinguishes the covariance-driven global minimum-variance portfolio from the maximum-Sharpe portfolio, which also depends on expected returns and a risk-free-rate assumption.
+The committed SVG figures in [outputs/](outputs/) are standalone, reusable figures for the efficient-frontier analysis. They are historical illustrations, not forecasts. Regenerate analysis figures by rerunning the relevant notebook cells.
 
 ## Repository structure
 
 ```text
 portfolio-optimization-lab/
 ├── data/
-│   └── ind30_m_vw_rets.csv
+│   ├── ind30_m_vw_rets.csv
+│   └── README.md
 ├── notebooks/
 │   ├── efficient_frontier.ipynb
-│   └── global_minimum_variance.ipynb
+│   ├── global_minimum_variance.ipynb
+│   ├── 03_maximum_sharpe_ratio.ipynb
+│   ├── 04_random_walk_gbm.ipynb
+│   ├── 05_cppi_drawdown_constraints.ipynb
+│   ├── 06_cppi_monte_carlo.ipynb
+│   ├── 07_liabilities_funding_ratio.ipynb
+│   └── 08_limits_of_diversification.ipynb
 ├── outputs/
 │   ├── two_asset_frontier.svg
 │   ├── n_asset_frontier.svg
 │   ├── gmv_and_cml.svg
 │   └── README.md
+├── tests/
+│   └── test_risk_kit.py
+├── .github/workflows/tests.yml
 ├── risk_kit.py
-├── requirements.txt
-└── README.md
+└── requirements.txt
 ```
 
 ## Setup
 
-Python 3.10+ is recommended.
+Python 3.10 or newer is recommended.
 
 ```bash
 git clone https://github.com/skate-m/portfolio-optimization-lab.git
 cd portfolio-optimization-lab
 python -m venv .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 jupyter lab
 ```
 
-Run notebooks from the repository root. Both notebooks import the shared toolkit with `import risk_kit as rk`.
+Run JupyterLab from the repository root so that the notebooks can import `risk_kit.py` and locate the bundled dataset. On Windows, activate the environment with `.venv\\Scripts\\activate`.
 
-## Methodology
+Run the automated checks with:
 
-- The CSV stores returns in percentage points; `rk.get_ind_returns()` converts them to decimal returns.
-- The estimation window is January 1996–December 2000.
-- Monthly returns are annualised geometrically; monthly covariance is multiplied by 12.
-- Optimisation is fully invested and long-only (weights in [0, 1], sum to 1).
-- SciPy's SLSQP solver minimises portfolio volatility subject to a target-return constraint.
-- The 3% annual risk-free rate is an illustrative assumption, not a live market quote.
+```bash
+pytest -q
+```
 
-## Data provenance
+## Shared toolkit
 
-The included `data/ind30_m_vw_rets.csv` snapshot contains 1,110 monthly observations across 30 industries, from July 1926 through December 2018. Source: [Kenneth R. French Data Library — 30 Industry Portfolios](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html). The dataset is committed so the project runs without a manual download.
+`risk_kit.py` is the common API for the notebooks. It includes industry-data loading, drawdowns, skewness/kurtosis, historical and Gaussian VaR, annualisation, Sharpe ratios, portfolio statistics, constrained optimisation (GMV/MSR/frontier), geometric Brownian motion, CPPI backtesting with optional drawdown ratchets, and liability discounting/funding ratios.
 
-## Reproducibility and limitations
+All return inputs are decimal returns: `0.01` represents 1%. Annual rates are expressed as decimals. The industry-return CSV stores percentage points and is converted by `get_ind_returns()`.
 
-The notebooks contain the analysis; `risk_kit.py` contains only the shared functions used by those notebooks. Figures are committed separately under `outputs/` and can be refreshed by rerunning the relevant notebook cells.
+## Data provenance and optional extensions
 
-This is an educational historical-data study, not investment advice. Results are sensitive to estimation windows and model assumptions. Transaction costs, taxes, liquidity, changing constituents and out-of-sample execution are not modelled. Historical results do not predict future returns.
+The included `data/ind30_m_vw_rets.csv` snapshot contains 1,110 monthly observations across 30 industries from July 1926 through December 2018. It is a Ken French Data Library 30-industry value-weighted return series. See [data/README.md](data/README.md).
+
+The market-cap-weighted extension in the diversification and CPPI notebooks additionally requires the companion firm-count and average-firm-size files. Those source files were not part of the supplied repository data and are intentionally not fabricated. The core notebooks run without them; the affected optional sections explain how to enable the extension.
+
+## Methodology and limitations
+
+- Historical estimation window in the efficient-frontier examples: January 1996–December 2000.
+- Monthly returns are geometrically annualised; monthly covariance matrices are multiplied by 12.
+- Portfolio optimisers use long-only weights in [0, 1] that sum to one.
+- The illustrative 3% annual risk-free rate and flat discount rates are assumptions, not market quotes.
+- CPPI is exposed to gap risk and discrete-rebalancing risk; a floor is not guaranteed in real markets.
+- GBM assumes constant drift and volatility with lognormal returns; it omits jumps, volatility clustering and regime changes.
+- Liability valuation uses a flat curve and simplified annual compounding.
+- Backtests exclude transaction costs, taxes, market impact, liquidity constraints and out-of-sample execution.
+
+This is an educational research project, not investment advice. Historical results and simulated scenarios do not predict future performance.
