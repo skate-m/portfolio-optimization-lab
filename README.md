@@ -41,14 +41,6 @@ The project uses monthly value-weighted returns for the 30 industry portfolios f
 
 *Source: [Notebook 01 — Efficient frontier](notebooks/01_efficient_frontier.ipynb).*
 
-### Efficient frontier with maximum-Sharpe portfolio
-
-<p align="center">
-  <img src="outputs/03_maximum_sharpe_frontier.png" alt="Efficient frontier with maximum-Sharpe portfolio" width="88%">
-</p>
-
-*Source: [Notebook 03 — Maximum Sharpe ratio](notebooks/03_maximum_sharpe_ratio.ipynb).*
-
 ### CPPI wealth versus buy-and-hold risky-asset wealth
 
 <p align="center">
@@ -73,14 +65,6 @@ The project uses monthly value-weighted returns for the 30 industry portfolios f
 
 *Source: [Notebook 05 — CPPI and drawdown constraints](notebooks/05_cppi_drawdown_constraints.ipynb).*
 
-### Monte Carlo CPPI wealth trajectories
-
-<p align="center">
-  <img src="outputs/06_cppi_monte_carlo_paths.png" alt="Monte Carlo simulated CPPI wealth trajectories" width="88%">
-</p>
-
-*Source: [Notebook 06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb).*
-
 ### Monte Carlo CPPI terminal-wealth distribution
 
 <p align="center">
@@ -88,14 +72,6 @@ The project uses monthly value-weighted returns for the 30 industry portfolios f
 </p>
 
 *Source: [Notebook 06 — Monte Carlo CPPI](notebooks/06_cppi_monte_carlo.ipynb).*
-
-### Rolling 36-month average industry correlation
-
-<p align="center">
-  <img src="outputs/08_rolling_correlation.png" alt="Rolling 36-month average pairwise industry correlation" width="88%">
-</p>
-
-*Source: [Notebook 08 — Limits of diversification](notebooks/08_limits_of_diversification.ipynb).*
 
 ### Trailing returns and correlation since 2007
 
@@ -142,7 +118,7 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Windows PowerShell
-# .venv\Scripts\Activate.ps1
+# .venv\\Scripts\\Activate.ps1
 
 python -m pip install --upgrade pip
 pip install -r requirements.txt
